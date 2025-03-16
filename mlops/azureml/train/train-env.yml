@@ -1,1 +1,24 @@
-ECHO is on.
+# ========================================================================================
+# AZURE ML TRAINING ENVIRONMENT FILE FOR MACHINE LEARNING PIPELINES
+# ========================================================================================
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+
+# ==================================================
+# ENVIRONMENT NAME - SPECIFIC TO EACH PROJECT
+# ==================================================
+name: streaming-used-car-sales-train-env  # Change name per mlops project
+
+# ==================================================
+# DOCKER IMAGE FOR AZURE ML TRAINING CLUSTER
+# ==================================================
+image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+
+# ==================================================
+# CONDA ENVIRONMENT FILE REFERENCE
+# ==================================================
+conda_file: ../../../data-science/environment/train-conda.yml
+
+# ==================================================
+# ENVIRONMENT DESCRIPTION
+# ==================================================
+description: Environment created from a Docker image plus Conda environment for ML model training

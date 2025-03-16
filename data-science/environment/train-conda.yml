@@ -1,1 +1,43 @@
-ECHO is on.
+# ==================================================================
+# CONDA ENVIRONMENT FILE FOR TRAINING ML MODELS IN AZURE ML PIPELINE
+# ==================================================================
+channels:
+  - defaults
+  - anaconda
+  - conda-forge
+
+dependencies:
+  # =======================
+  # BASE PYTHON ENVIRONMENT
+  # =======================
+  - python=3.8  # Updated Python version for better compatibility
+  - pip
+
+  # =============================
+  # DATA PROCESSING AND UTILITIES
+  # =============================
+  - pandas=1.3.3  # Data manipulation
+  - numpy=1.21.2  # Numerical computations
+  - pyarrow=10.0.0  # Apache Arrow support
+  - joblib=1.1.0  # Parallel computing for ML tasks
+  
+  # ==========================
+  # MACHINE LEARNING LIBRARIES
+  # ==========================
+  - scikit-learn=1.0  # Machine learning algorithms
+  - xgboost=1.5.0  # Gradient boosting algorithm
+  - lightgbm=3.3.1  # Efficient boosting library for structured data
+
+  # ===================
+  # VISUALIZATION TOOLS
+  # ===================
+  - matplotlib=3.4.3  # Data visualization
+
+  # ================================
+  # AZURE MACHINE LEARNING LIBRARIES
+  # ================================
+  - pip:
+      - azureml-mlflow==1.38.0  # MLflow for tracking
+      - azure-ai-ml==1.0.0  # Azure AI ML SDK
+      - git+https://github.com/microsoft/AzureML-Observability#subdirectory=aml-obs-client
+      - git+https://github.com/microsoft/AzureML-Observability#subdirectory=aml-obs-collector

@@ -1,1 +1,16 @@
-ECHO is on.
+# ========================================================================================
+# AZURE ML DATASET CONFIGURATION FILE
+# ========================================================================================
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+
+# ==================================================
+# DATASET TYPE
+# ==================================================
+type: uri_file  # Change to `uri_folder` if referencing a directory
+
+# ==================================================
+# PROJECT-SPECIFIC SETTINGS (CHANGE PER PROJECT)
+# ==================================================
+name: auto-mpg-data  # Change per project (e.g., pima-diabetes-data)
+description: Dataset for auto MPG fuel efficiency prediction  # Update for each dataset
+path: ../../../data/carmpg.csv  # Adjust the path to match each project's dataset

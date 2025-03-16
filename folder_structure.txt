@@ -16,6 +16,7 @@ C:.
 |           
 +---data
 |       .gitkeep
+|       used_cars.csv
 |       
 +---data-science
 |   +---environment
