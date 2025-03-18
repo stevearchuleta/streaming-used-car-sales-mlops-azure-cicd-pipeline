@@ -1,1 +1,42 @@
-ECHO is on.
+# =====================================================================
+# TRAINING CONFIGURATION FILE FOR USED CAR SALES PRICE PREDICTION MODEL
+# =====================================================================
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command  # ==== DEFINES TRAINING JOB IN AZURE ML ====
+
+# =========================
+# PROJECT-SPECIFIC SETTINGS
+# =========================
+name: train_used_car_sales_model  # ==== UNIQUE COMPONENT NAME ====
+display_name: train_used_car_sales_model  # ==== DISPLAY NAME IN AZURE ML ====
+
+# =====================
+# INPUT DATA REFERENCES
+# =====================
+inputs: 
+  train_data:
+    type: uri_folder  # ==== TRAINING DATA LOCATION ====
+  test_data:
+    type: uri_folder  # ==== TEST DATA LOCATION ====
+
+# ====================
+# OUTPUT CONFIGURATION
+# ====================
+outputs:
+  model_output:
+    type: mlflow_model  # ==== OUTPUT SAVED AS MLFLOW MODEL ====
+
+# ======================
+# TRAINING JOB EXECUTION
+# ======================
+code: ../../../data-science/src  # ==== LOCATION OF TRAINING SCRIPT ====
+command: >-
+  python train.py 
+  --train_data ${{inputs.train_data}}
+  --test_data ${{inputs.test_data}}
+  --model_output ${{outputs.model_output}}
+
+# ==============================
+# TRAINING ENVIRONMENT REFERENCE
+# ==============================
+environment: azureml:streaming-used-car-sales-train-env@latest  # ==== USES PREDEFINED TRAINING ENVIRONMENT ====
