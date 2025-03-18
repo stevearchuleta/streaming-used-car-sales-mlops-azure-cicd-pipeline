@@ -1,0 +1,40 @@
+# ===============================================================
+# GITHUB ACTIONS WORKFLOW FOR RUNNING USED CAR SALES JOBS VIA CLI
+# ===============================================================
+name: cli-jobs-pipelines-used-car-sales
+
+# ==================================================
+# WORKFLOW TRIGGERS - PUSH TO MAIN - PULLS FROM MAIN
+# ==================================================
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - run-job.sh
+      - setup.sh
+  workflow_dispatch:  # ==== ALLOWS MANUAL EXECUTION ====
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+
+      - name: Run setup script
+        run: bash setup.sh
+        continue-on-error: true
+
+      - name: Execute training job
+        run: bash -x ../../run-job.sh pipeline.yml
+        working-directory: jobs/pipeline

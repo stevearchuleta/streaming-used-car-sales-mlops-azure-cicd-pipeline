@@ -1,10 +1,10 @@
-# ================================================================================================
-# GITHUB ACTIONS WORKFLOW FOR TRAINING AND DEPLOYING STREAMING USED CAR SALES ML PIPELINE ON AZURE ML 
-# ================================================================================================
+# ===================================================================================================
+# GITHUB ACTIONS WORKFLOW FOR TRAINING AND DEPLOYING STREAMING USED CAR SALES ML PIPELINE ON AZURE ML
+# ===================================================================================================
 name: deploy-model-training-pipeline
 
-# ================================================== 
-# WORKFLOW TRIGGERS - PUSH TO main - PULLS FROM main
+# ==================================================
+# WORKFLOW TRIGGERS - PUSH TO MAIN - PULLS FROM MAIN
 # ==================================================
 on:
   push:
@@ -13,52 +13,13 @@ on:
   pull_request:
     branches:
       - main
-  # ====================================================================
-  # ADD MANUAL TRIGGER (workflow_dispatch) TO ALLOW FOR MANUAL EXECUTION
-  # ====================================================================
-  workflow_dispatch:
+  workflow_dispatch:  # ==== ADD MANUAL EXECUTION OPTION ====
 
 jobs:
 
-  # ==================================================================================
-  # READ CONFIGURATION FILE - READS AZURE ML CONFIGURATIONS FROM config-infra-prod.yml
-  # ==================================================================================
-  get-config:
-      uses: Azure/mlops-templates/.github/workflows/read-yaml.yml@main
-      with:
-        file_name: config-infra-prod.yml
-
-  # ============================================= 
-  # CREATE AZURE ML COMPUTE CLUSTER - cpu_cluster
   # =============================================
-  create-compute:
-      needs: get-config
-      uses: Azure/mlops-templates/.github/workflows/create-compute.yml@main
-      with:
-        cluster_name: ${{ needs.get-config.outputs.compute_cluster_name }}
-        size: Standard_DS11_v2
-        min_instances: 0
-        max_instances: 1
-        cluster_tier: dedicated
-        resource_group: ${{ needs.get-config.outputs.resource_group }}
-        workspace_name: ${{ needs.get-config.outputs.aml_workspace }}
-      secrets:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-
-  # =================================================== 
-  # REGISTER DATASET WITH AZURE ML - STREAMING USED CAR SALES
-  # ===================================================
-  register-dataset:
-    needs: get-config
-    uses: Azure/mlops-templates/.github/workflows/register-dataset.yml@main
-    with:
-      resource_group: ${{ needs.get-config.outputs.resource_group }}
-      workspace_name: ${{ needs.get-config.outputs.aml_workspace }}
-      name: streaming-used-car-sales-data
-      data_file: mlops/azureml/train/data.yml
-    secrets:
-      creds: ${{secrets.AZURE_CREDENTIALS}}
-
+  # RUN TRAINING PIPELINE streaming-used-car-sales
+  # =============================================
   run-pipeline:
       needs: [get-config, register-environment, create-compute, register-dataset]
       uses: Azure/mlops-templates/.github/workflows/run-pipeline.yml@main

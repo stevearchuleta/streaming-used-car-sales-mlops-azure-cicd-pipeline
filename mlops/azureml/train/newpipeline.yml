@@ -1,1 +1,99 @@
-ECHO is on.
+# ========================================================================
+# AZURE ML TRAINING PIPELINE CONFIGURATION FILE - STREAMING USED CAR SALES
+# ========================================================================
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+# =========================
+# PROJECT-SPECIFIC SETTINGS
+# =========================
+display_name: streaming_used_car_sales_training_pipeline  # ==== UNIQUE PIPELINE NAME ====
+experiment_name: streaming-used-car-sales-training  # ==== EXPERIMENT NAME IN AZURE ML ====
+description: Training Pipeline for Predicting Used Car Sales from Streaming Data  # ==== PIPELINE DESCRIPTION ====
+
+# ====================
+# INPUT DATA REFERENCE
+# ====================
+inputs:
+  input:
+    type: uri_file  # ==== INPUT DATA TYPE: FILE ====
+    path: azureml:streaming-used-car-sales-data@latest  # ==== DATASET REFERENCE IN AZURE ML ====
+
+# ====================
+# OUTPUT CONFIGURATION
+# ====================
+outputs:
+  train_data:  # ==== TRAINING DATA OUTPUT ====
+  test_data:  # ==== TEST DATA OUTPUT ====
+  model_info_output_path:  # ==== TRAINED MODEL OUTPUT PATH ====
+
+# =================
+# PIPELINE SETTINGS
+# =================
+settings:
+  default_datastore: azureml:workspaceblobstore  # ==== DEFAULT AZURE ML DATASTORE ====
+  default_compute: azureml:cpu-cluster  # ==== COMPUTE CLUSTER FOR PIPELINE EXECUTION ====
+  continue_on_step_failure: false  # ==== HALT EXECUTION IF A STEP FAILS ====
+
+# ===========================================================
+# PIPELINE JOBS - PREPROCESSING, TRAINING, MODEL REGISTRATION
+# ===========================================================
+jobs:
+
+  # =====================================
+  # PREPROCESSING JOB - DATA PREPARATION
+  # =====================================
+  prep_data:
+    name: prep_data  # ==== JOB NAME: DATA PREPROCESSING ====
+    display_name: prep-data  # ==== FRIENDLY DISPLAY NAME ====
+    code: ../../../data-science/src  # ==== LOCATION OF SCRIPT FILES ====
+    command: >-  # ==== EXECUTION COMMAND ====
+      python prep.py 
+      --raw_data ${{inputs.raw_data}} 
+      --train_data ${{outputs.train_data}}
+      --test_data ${{outputs.test_data}}
+    environment: azureml:streaming-used-car-sales-train-env@latest  # ==== SPECIFIED TRAINING ENVIRONMENT ====
+    inputs:
+      raw_data: ${{parent.inputs.input}}  # ==== RAW INPUT DATA ====
+    outputs:
+      train_data: ${{parent.outputs.train_data}}  # ==== TRAINING DATA OUTPUT ====
+      test_data: ${{parent.outputs.test_data}}  # ==== TEST DATA OUTPUT ====
+
+  # ======================================
+  # MODEL TRAINING JOB - XGBOOST REGRESSOR
+  # ======================================
+  train_xgboost:
+    name: train_xgboost
+    display_name: train-xgboost
+    code: ../../../data-science/src
+    command: >-
+      python train.py 
+      --train_data ${{inputs.train_data}} 
+      --test_data ${{inputs.test_data}} 
+      --model_output ${{outputs.model_output}}
+      --metrics RMSE MSE R2  # ==== EVALUATION METRICS ====
+    environment: azureml:streaming-used-car-sales-train-env@latest
+    inputs:
+      train_data: ${{parent.jobs.prep_data.outputs.train_data}}
+      test_data: ${{parent.jobs.prep_data.outputs.test_data}}
+    outputs:
+      model_output: ${{parent.outputs.model_info_output_path}}
+
+  # =========================================
+  # MODEL REGISTRATION JOB - SAVE TO AZURE ML
+  # =========================================
+  register_model:
+    name: register_model
+    display_name: register-model
+    code: ../../../data-science/src
+    command: >-
+      python register.py 
+      --model_name streaming_used_car_sales_model
+      --model_path ${{parent.jobs.train_xgboost.outputs.model_output}} 
+      --model_info_output_path ${{outputs.model_info_output_path}}
+    environment: azureml:streaming-used-car-sales-train-env@latest
+    inputs:
+      model_name: "streaming_used_car_sales_model"
+      model_path: ${{parent.jobs.train_xgboost.outputs.model_output}}
+    outputs:
+      model_info_output_path: ${{parent.outputs.model_info_output_path}}

@@ -1,24 +1,24 @@
-# ========================================================================================
-# AZURE ML TRAINING ENVIRONMENT FILE FOR MACHINE LEARNING PIPELINES
-# ========================================================================================
+# ===============================================================
+# AZURE ML TRAINING ENVIRONMENT FILE FOR STREAMING USED CAR SALES
+# ===============================================================
 $schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
 
-# ==================================================
+# ===========================================
 # ENVIRONMENT NAME - SPECIFIC TO EACH PROJECT
-# ==================================================
-name: streaming-used-car-sales-train-env  # Change name per mlops project
+# ===========================================
+name: streaming-used-car-sales-train-env  # ==== UNIQUE ENVIRONMENT NAME FOR THIS PROJECT ====
 
-# ==================================================
+# ==========================================
 # DOCKER IMAGE FOR AZURE ML TRAINING CLUSTER
-# ==================================================
-image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04
+# ==========================================
+image: mcr.microsoft.com/azureml/openmpi3.1.2-ubuntu18.04  # ==== BASE IMAGE FOR TRAINING ====
 
-# ==================================================
+# ================================
 # CONDA ENVIRONMENT FILE REFERENCE
-# ==================================================
-conda_file: ../../../data-science/environment/train-conda.yml
+# ================================
+conda_file: ../../../data-science/environment/train-conda.yml  # ==== CONDA ENVIRONMENT FILE ====
 
-# ==================================================
+# =======================
 # ENVIRONMENT DESCRIPTION
-# ==================================================
+# =======================
 description: Environment created from a Docker image plus Conda environment for ML model training
