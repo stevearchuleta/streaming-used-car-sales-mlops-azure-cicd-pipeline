@@ -1,1 +1,34 @@
-ECHO is on.
+# ==================================================================================================
+# PYTHON PACKAGE DEPENDENCIES FOR USED CAR SALES MLOPS PROJECT
+# ==================================================================================================
+# This file contains all required Python dependencies for running the Used Car Sales MLOps pipeline.
+# It ensures that all necessary libraries are installed when setting up the environment.
+# ==================================================================================================
+
+# ============================
+# CODE QUALITY & LINTING TOOLS
+# ============================
+black==22.3.0  # Python code formatter
+flake8==4.0.1  # Linter for Python scripts
+isort==5.10.1  # Sorts Python imports
+pre-commit==2.19.0  # Automates code quality checks before commits
+
+# ==========================
+# MACHINE LEARNING LIBRARIES
+# ==========================
+scikit-learn==1.0  # Core ML library for regression models
+xgboost==1.5.0  # Gradient boosting framework for price prediction
+
+# =====================================
+# DATA PROCESSING & FEATURE ENGINEERING
+# =====================================
+pandas==1.3.3  # Data manipulation
+numpy==1.21.2  # Numerical computations
+pyarrow==10.0.0  # Apache Arrow for efficient data interchange
+joblib==1.1.0  # Parallel processing for ML models
+
+# ================================
+# AZURE MACHINE LEARNING LIBRARIES
+# ================================
+azureml-mlflow==1.38.0  # MLflow for tracking experiments
+azure-ai-ml==1.0.0  # Azure AI ML SDK for running jobs
