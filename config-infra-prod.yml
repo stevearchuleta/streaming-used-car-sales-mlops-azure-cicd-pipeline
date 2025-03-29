@@ -32,5 +32,5 @@ variables:
   # ===================
   # PIPELINE REFERENCES
   # ===================
-  resource_group: <enter-your-resource-group-name>  # Ensure correct Azure resource group
-  aml_workspace: <enter-your-aml-workspace-name>  # Ensure correct Azure ML workspace
+  resource_group: default_resource_group  # Ensure correct Azure resource group
+  aml_workspace: car-sales-mlops-azure-cicd-pipe  # Ensure correct Azure ML workspace
