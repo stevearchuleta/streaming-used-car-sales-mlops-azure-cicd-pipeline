@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 name: cli-jobs-pipelines-used-car-sales
 
 on:
@@ -10,28 +11,24 @@ on:
     paths:
       - run-job.sh
       - setup.sh
-  workflow_dispatch:  # ==== ALLOWS MANUAL EXECUTION ====
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout repo
       uses: actions/checkout@v3
 
     - name: Azure login
-      uses: azure/login@v2
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Show Azure Subscription
-      run: az account show
 
     - name: Run setup script
       run: bash setup.sh
       continue-on-error: true
 
-    - name: Execute training job
-      run: bash -x ../../run-job.sh pipeline.yml
-      working-directory: jobs/pipeline
+    - name: Run job (use newpipeline)
+      run: bash -x ./run-job.sh mlops/azureml/train/newpipeline.yml
