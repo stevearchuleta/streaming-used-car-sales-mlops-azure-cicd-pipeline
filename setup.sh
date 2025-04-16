@@ -15,7 +15,7 @@ az extension add -n ml -y
 # ======================================================
 # SET UP DEFAULT RESOURCE GROUP, LOCATION, AND WORKSPACE
 # ======================================================
-GROUP="default_resource_group_test"  # ==== DEFAULT RESOURCE GROUP ====
+GROUP="default_resource_group"  # ==== DEFAULT RESOURCE GROUP ====
 LOCATION="westus2"  # ==== DEFAULT AZURE LOCATION ====
 WORKSPACE="my_test_workspace"  # ==== DEFAULT AZURE ML WORKSPACE ====
 
