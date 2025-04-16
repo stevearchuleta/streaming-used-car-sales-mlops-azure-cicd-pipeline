@@ -15,8 +15,8 @@ az extension add -n ml -y
 # ======================================================
 # SET UP DEFAULT RESOURCE GROUP, LOCATION, AND WORKSPACE
 # ======================================================
-GROUP="default_resource_group"  # ==== DEFAULT RESOURCE GROUP ====
-LOCATION="westus2"  # ==== DEFAULT AZURE LOCATION ====
+GROUP="car-sales-mlops-azure-cicd-pipe"  # ==== DEFAULT RESOURCE GROUP ====
+LOCATION="eastus"  # ==== DEFAULT AZURE LOCATION ====
 WORKSPACE="my_test_workspace"  # ==== DEFAULT AZURE ML WORKSPACE ====
 
 # ===================================
