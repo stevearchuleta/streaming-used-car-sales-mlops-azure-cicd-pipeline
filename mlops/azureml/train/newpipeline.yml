@@ -77,7 +77,7 @@ jobs:
       train_data: ${{parent.jobs.prep_data.outputs.train_data}}
       test_data: ${{parent.jobs.prep_data.outputs.test_data}}
     outputs:
-      model_output: ${{parent.outputs.model_info_output_path}}
+      model_output:
 
   # =========================================
   # MODEL REGISTRATION JOB - SAVE TO AZURE ML
