@@ -17,7 +17,7 @@ description: Training Pipeline for Predicting Used Car Sales from Streaming Data
 inputs:
   input:
     type: uri_file  # ==== INPUT DATA TYPE: FILE ====
-    path: azureml:streaming-used-car-sales-data@latest  # ==== DATASET REFERENCE IN AZURE ML ====
+    path: azureml:used-car-sales-data@latest  # ==== DATASET REFERENCE IN AZURE ML ====
 
 # ====================
 # OUTPUT CONFIGURATION
