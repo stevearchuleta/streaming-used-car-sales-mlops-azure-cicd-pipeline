@@ -30,5 +30,8 @@ jobs:
       run: bash setup.sh
       continue-on-error: true
 
+    - name: Fix marshmallow import inside GitHub runner
+      run: pip install --upgrade marshmallow==3.20.1
+
     - name: Run job (use newpipeline)
       run: bash -x ./run-job.sh mlops/azureml/train/newpipeline.yml
